@@ -1,0 +1,80 @@
+<div class="p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold m-0">จัดการประเภทสินค้า (Product Management)</h2>
+    <button mat-raised-button color="primary" (click)="openMyDialog()">
+      <mat-icon>add</mat-icon> เพิ่มสินค้าใหม่
+    </button>
+  </div>
+
+  <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-label>ค้นหาประเภทสินค้า (Filter)</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="ตัวอย่าง: เสื้อผ้า" #input>
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <div class="mat-elevation-z8 overflow-hidden" style="border-radius: 8px;">
+    <table mat-table [dataSource]="dataSource" class="w-100">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="productName">
+        <th mat-header-cell *matHeaderCellDef> ประเภทสินค้า </th>
+        <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> จัดการ </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="accent" (click)="openMyDialog(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteType(element.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell p-4 text-center" colspan="3">
+          ไม่พบข้อมูลที่ค้นหา "{{input.value}}"
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<ng-template #myDialog>
+  <h2 mat-dialog-title class="bg-primary text-white p-3">
+    <mat-icon class="align-middle me-2">inventory_2</mat-icon>
+    {{ isEdit ? 'แก้ไขข้อมูลสินค้า' : 'เพิ่มข้อมูลสินค้าใหม่' }}
+  </h2>
+
+  <mat-dialog-content class="pt-4">
+    <form [formGroup]="productForm">
+      <div class="row">
+        <div class="col-12 mb-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>ชื่อประเภทสินค้า</mat-label>
+            <input matInput formControlName="productName" placeholder="เช่น เครื่องใช้ไฟฟ้า">
+            <mat-icon matPrefix class="me-2 text-secondary">label</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="p-3">
+    <button mat-button (click)="onCancel()">ยกเลิก</button>
+    <button mat-raised-button color="primary"
+            [disabled]="productForm.invalid"
+            (click)="save()">
+      <mat-icon>save</mat-icon> บันทึกข้อมูล
+    </button>
+  </mat-dialog-actions>
+</ng-template>

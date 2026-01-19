@@ -1,0 +1,41 @@
+<mat-dialog-content>
+
+  <form [formGroup]="userForm" class="pt-2 container-fluid">
+
+    <div class="row">
+
+      <div class="col-md-6 mb-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>ชื่อผู้ใช้</mat-label>
+          <input matInput formControlName="username">
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>ชื่อ</mat-label>
+          <input matInput formControlName="name">
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>บทบาท</mat-label>
+          <input matInput formControlName="role">
+        </mat-form-field>
+      </div>
+
+    </div>
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-button
+    color="primary"
+    (click)="save()">
+    <mat-icon>save</mat-icon> บันทึก
+  </button>
+</mat-dialog-actions>

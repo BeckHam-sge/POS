@@ -1,0 +1,55 @@
+<h2 mat-dialog-title class="fw-bold">
+  {{ productForm.get('id')?.value ? 'แก้ไขข้อมูลสินค้า' : 'เพิ่มสินค้าใหม่' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="productForm" class="pt-2 container-fluid">
+    <div class="row">
+      <div class="col-12 mb-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>ชื่อสินค้า</mat-label>
+          <input matInput formControlName="productName">
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 mb-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>หมวดหมู่</mat-label>
+          <mat-select formControlName="categoryId">
+            <mat-option value="">เลือกหมวดหมู่</mat-option>
+            @for (category of (categories$ | async); track category.id) {
+              <!-- วนลูป categories ที่ได้จาก categories$ -->
+            <mat-option
+              [value]="category._id || category.id">
+              {{ category.name }}
+            </mat-option>}
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>ราคา</mat-label>
+          <input matInput type="number" formControlName="price">
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>จำนวนคงเหลือ</mat-label>
+          <input matInput type="number" formControlName="stock">
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-content> <mat-dialog-actions align="end" class="pb-3 pe-3">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="productForm.invalid"
+    (click)="save()">
+    <mat-icon>save</mat-icon> บันทึกสินค้า
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,49 @@
+<div class="container mt-5 ">
+    <div class="row justify-content-center">
+        <div class="col-11 col-md-6 col-lg-4 border border-4 p-4 shadow-sm">
+
+            <h1 class="h3 mb-4 fw-bold text-center">Login</h1>
+
+            <form [formGroup]="loginForm" (ngSubmit)="onlogin()">
+              <div class="mb-3">
+                <input type="text"
+                  formControlName="username"
+                  placeholder="Username"
+                  class="form-control">
+
+                  @if (loginForm.get('username')?.invalid && (loginForm.get('username')?.dirty || loginForm.get('username')?.touched)) {
+                <div class="text-danger small mt-1">
+                  @if (loginForm.get('username')?.hasError('required')) {
+                <div>กรุณากรอก Username</div>
+                  }
+                </div>
+                  }
+              </div>
+
+                <div class="mb-3">
+                    <input type="password" formControlName="password" placeholder="Password" class="form-control">
+
+                    @if (loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)) {
+                        <div class="text-danger small mt-1">
+                            @if (loginForm.get('password')?.hasError('required')) {
+                                <div>กรุณากรอกรหัสผ่าน</div>
+                            }
+                            @if (loginForm.get('password')?.hasError('minlength')) {
+                                <div>รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร</div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <button
+                  type="submit"
+                  [disabled]="loginForm.invalid"
+                  class="btn btn-dark w-100 py-2"
+                  >
+                    Login
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>

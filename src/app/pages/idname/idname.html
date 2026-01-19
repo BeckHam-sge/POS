@@ -1,0 +1,88 @@
+  <div class="container mt-4">
+    <button mat-raised-button color="primary" (click)="openMyDialog()">เพิ่มข้อมูล</button>
+
+    <button mat-raised-button color="accent" (click)="openSimpleDialog()" class="ms-2">00000</button>
+  </div>
+
+
+
+  <table mat-table [dataSource]="dataSource"  class="mat-elevation-z8">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> id </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- APG Column -->
+    <ng-container matColumnDef="apg">
+  <th mat-header-cell *matHeaderCellDef> apg </th>
+      <td mat-cell *matCellDef="let element"> {{element.apg}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef >action</th>
+      <td  mat-cell *matCellDef="let element">
+        <button
+          class="btn btn-sm btn-danger"
+          (click)="deleteItem(element.id)"
+        >
+          delete
+        </button>
+      </td>
+    </ng-container>
+
+
+    <!-- Header Row -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-dark"></tr>
+
+    <!-- Data Rows -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+  </table>
+
+
+
+  <ng-template #myDialogTemplate>
+    <h2 mat-dialog-title>ยินดีต้อนรับ</h2>
+
+    <mat-dialog-content>
+      <form [formGroup]="userForm" class="pt-2 container-fluid">
+        <div class="row">
+          <div class="col-12 mb-2">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>ID</mat-label>
+              <input matInput formControlName="id"> </mat-form-field>
+          </div>
+
+          <div class="col-12 mb-2">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="name"> </mat-form-field>
+          </div>
+
+          <div class="col-12 mb-2">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>APG</mat-label>
+              <input matInput type="number" formControlName="apg"> </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="cancel()">ยกเลิก</button>
+      <button mat-raised-button color="primary" (click)="saveUser()" [disabled]="!userForm.valid">
+        บันทึก
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+
+
+

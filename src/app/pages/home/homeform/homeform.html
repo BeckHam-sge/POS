@@ -1,0 +1,42 @@
+<mat-dialog-content>
+  <form [formGroup]="userForm" class="pt-2 container-fluid">
+    <div class="row">
+
+        <div class="col-12 mb-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>id</mat-label>
+            <input matInput type="number" formControlName="id">
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 mb-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>name</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+        </div>
+
+        <app-form></app-form>
+
+    </div>
+  </form>
+  <mat-dialog-actions align="end" class="pb-3 pe-3">
+
+    <button
+      mat-button
+      mat-dialog-close
+      (click)="cancel()"
+    >
+      cancel
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="userForm.invalid"
+      (click)="save()"
+    >
+      save
+    </button>
+  </mat-dialog-actions>
+</mat-dialog-content>
