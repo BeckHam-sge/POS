@@ -34,36 +34,13 @@ export class Inventory implements OnInit {
 
   private productService = inject(ProductService);
   private dialog = inject(MatDialog);
-  private fb = inject(FormBuilder);
 
   pendingDeleteId: string | null = null;
-  mode: 'add' | 'edit' = 'add'; // ระบุโหมดการทำงาน: เพิ่มหรือแก้ไข
-
-
-  deleteProduct(id: string) {
-    this.pendingDeleteId = id;
-    this.dialog.open(this.deleteDialogTemplate, {
-      width: '350px'
-    });
-  }
-
-  confirmDelete() {
-    if (this.pendingDeleteId) {
-      this.productService.deleteProduct(this.pendingDeleteId).subscribe({
-        next: () => {
-            this.loadData();
-            this.dialog.closeAll();
-            this.pendingDeleteId = null;
-        },
-        error: (err) => console.error('Error deleting product', err)
-      });
-    }
-  }
-
+  mode: 'add' | 'edit' = 'add';
   displayedColumns: string[] = ['code', 'productName', 'Categories', 'price', 'stock', 'actions'];
   dataSource = new MatTableDataSource<Product>([]);
 
-  ngOnInit(): void {
+    ngOnInit(): void {
     this.loadData();
   }
 
@@ -71,7 +48,7 @@ export class Inventory implements OnInit {
       this.productService.getProducts().subscribe({
         next: (response: any) => {
           console.log('API Response Raw:', response);
-          
+
           let data: any[] = [];
           if (Array.isArray(response)) {
             data = response;
@@ -87,35 +64,48 @@ export class Inventory implements OnInit {
 
 
           this.dataSource.data = data.map(item => ({
-            _id: item._id || item.id, // Use id if _id missing
+            _id: item._id || item.id,
             code: item.code || item.sku || item.product_code || String(item.id) || 'N/A',
             productName: item.name || item.productName || 'Unknown Product',
             price: parseFloat(item.price) || 0,
             stock: Number(item.amount || item.stock || 0),
           }));
-          
+
           console.log('Mapped Data Source:', this.dataSource.data);
         },
         error: (err) => console.error('Error loading data', err)
       });
   }
 
+  deleteProduct(id: string) {
+    this.pendingDeleteId = id;
+    this.dialog.open(this.deleteDialogTemplate, {
+      width: '350px'
+    });
+  }
+
+    confirmDelete() {
+    if (this.pendingDeleteId) {
+      this.productService.deleteProduct(this.pendingDeleteId).subscribe({
+        next: () => {
+            this.loadData();
+            this.dialog.closeAll();
+            this.pendingDeleteId = null;
+        },
+        error: (err) => console.error('Error deleting product', err)
+      });
+    }
+  }
 
     applyFilter(event: Event) {
-      console.log("event",event.target as HTMLInputElement)
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue;
     }
 
-
-
-  // ฟังก์ชัน save เดิมถูกย้ายไปจัดการผ่าน onAdd/editProduct แล้ว (หลังจากปิด dialog)
-  
   onAddProduct() {
-    this.mode = 'add'; 
+    this.mode = 'add';
     const dialogRef = this.dialog.open(inventoryformComponent, {
         width: '500px',
-        // ไม่ต้องส่ง data สำหรับการเพิ่มใหม่
       });
 
       dialogRef.afterClosed().subscribe(result => {
@@ -129,7 +119,7 @@ export class Inventory implements OnInit {
     this.mode = 'edit';
     const dialogRef = this.dialog.open(inventoryformComponent, {
       width: '500px',
-      data: product // ส่งข้อมูลสินค้าไปให้ฟอร์ม
+      data: product
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -139,20 +129,18 @@ export class Inventory implements OnInit {
     });
   }
 
-  // ฟังก์ชันสำหรับจัดการข้อมูลที่ได้จาก Dialog (ทั้ง Add และ Edit)
   handleSave(formData: any) {
     const { id, productName, price, stock, categoryId } = formData;
-    
+
     const productData: any = {
       name: productName,
       price: Number(price),
       amount: Number(stock),
-      category_id: categoryId // ใช้ categoryId ที่ได้จากฟอร์ม
+      category_id: categoryId
     };
 
     if (id) {
-       // Update
-       this.productService.updateProduct(id, productData).subscribe({
+      this.productService.updateProduct(id, productData).subscribe({
         next: () => {
           alert('อัปเดตสินค้าเรียบร้อย');
           this.loadData();
@@ -160,11 +148,10 @@ export class Inventory implements OnInit {
         error: (err) => console.error(err)
       });
     } else {
-      // Add
       this.productService.addProduct(productData).subscribe({
         next: () => {
-           alert('บันทึกสินค้าเรียบร้อย');
-           this.loadData();
+          alert('บันทึกสินค้าเรียบร้อย');
+          this.loadData();
         },
         error: (err) => console.error(err)
       });
