@@ -13,9 +13,12 @@ export interface User {
   providedIn: 'root',
 })
 export class Users {
+  appUser(UserData: any) {
+    throw new Error('Method not implemented.');
+  }
   private http!: HttpClient;
   private apiUrl = '/users';
-  
+
   constructor(http: HttpClient) {
     this.http = http;
   }
@@ -27,7 +30,7 @@ export class Users {
   getUser(id: number): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
-  
+
 
   addUser(user: User): Observable<User> {
     return this.http.post<User>(this.apiUrl, user);
@@ -41,7 +44,7 @@ export class Users {
     return this.http.delete<User>(`${this.apiUrl}/${id}`);
   }
 
-  
 
-  
+
+
 }

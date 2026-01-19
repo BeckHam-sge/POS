@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -62,10 +62,9 @@ export class Inventory implements OnInit {
               console.warn('API returned an empty array of products.');
           }
 
-
           this.dataSource.data = data.map(item => ({
-            _id: item._id || item.id,
-            code: item.code || item.sku || item.product_code || String(item.id) || 'N/A',
+            id: item.id || item.id,
+            code: item.code || item.sku || item.product_code ||  'N/A',
             productName: item.name || item.productName || 'Unknown Product',
             price: parseFloat(item.price) || 0,
             stock: Number(item.amount || item.stock || 0),
@@ -131,7 +130,6 @@ export class Inventory implements OnInit {
 
   handleSave(formData: any) {
     const { id, productName, price, stock, categoryId } = formData;
-
     const productData: any = {
       name: productName,
       price: Number(price),

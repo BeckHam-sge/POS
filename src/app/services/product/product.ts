@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Product {
-  _id?: string; // API usually returns _id
+  _id?: number; // API usually returns _id
   code?: string;
   productName: string;
   price: number;
@@ -13,10 +13,10 @@ export interface Product {
 
 @Injectable({
   providedIn: 'root',
-})  
+})
 export class ProductService {
   private http = inject(HttpClient);
-  private apiUrl = '/sku_masters'; 
+  private apiUrl = '/sku_masters';
 
   constructor() { }
 

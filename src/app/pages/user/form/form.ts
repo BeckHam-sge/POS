@@ -5,6 +5,7 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatOption } from "@angular/material/select";
 
 @Component({
   selector: 'app-form',
@@ -19,7 +20,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-  ],
+    MatOption
+],
   templateUrl: './form.html',
 })
 export class Form {
@@ -37,14 +39,16 @@ export class Form {
     this.userForm = this.fb.group({
       id: [''],
       username: ['', Validators.required],
+      password: ['', Validators.required , Validators.minLength(8)],
       name: ['', Validators.required],
       role: ['', Validators.required],
     })
   }
 
   save() {
-    if (!this.userForm.valid) return;
+    if (this.userForm.valid) {
     this.dialogRef.close(this.userForm.value);
+    }
   }
 }
 

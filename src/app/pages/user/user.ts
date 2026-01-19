@@ -1,5 +1,5 @@
-import { user } from './../home/homeform/homeform';
-import { Component, inject, OnInit } from '@angular/core';
+
+import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableDataSource,MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -9,8 +9,7 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Form } from './form/form';
 import { Users } from '../../services/Users/users';
-import { subscribeOn } from 'rxjs';
-import { DataSource } from '@angular/cdk/table';
+
 
 export interface UserData {
     id: number;
@@ -18,33 +17,44 @@ export interface UserData {
     name: string;
     role: string;
 }
-  @Component({
-    selector: 'app-user',
-    standalone: true,
-    imports: [
-      MatTableModule,
-      MatPaginatorModule,
-      MatDialogModule,
-      MatButtonModule,
-      MatIconModule,
-      MatFormField,
-      MatLabel,
-      MatInputModule,
-    ],
-    templateUrl: './user.html',
-    styleUrl: './user.scss',
-  })
-  export class User implements OnInit {
+
+@Component({
+  selector: 'app-user',
+  standalone: true,
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormField,
+    MatLabel,
+    MatInputModule,
+  ],
+  templateUrl: './user.html',
+  styleUrl: './user.scss',
+})
+export class UserComponent implements OnInit {
+
+  @ViewChild('deleteDialog') deleteDialogTemplate!: TemplateRef<any>;
 
   private dialog = inject(MatDialog);
   private usersService = inject(Users);
 
-
   displayedColumns: string[] = ['id','username','name','role','actions'];
   dataSource = new MatTableDataSource<UserData>([]);
+  pendingDeleteId: number | null | undefined;
 
   ngOnInit(): void {
     this.loadUsers();
+  }
+
+  handleSave(result: UserData) {
+    this.usersService.addUser(result).subscribe({
+      next: () => {
+        this.loadUsers();
+      }
+    })
   }
 
   loadUsers() {
@@ -61,26 +71,36 @@ export interface UserData {
       width: '400px'
     });
 
-    dialogRef.afterClosed().subscribe((result: UserData | undefined) => {
-      if (!result) return;
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.handleSave(result);
+      }
     });
   }
 
   search(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-
   }
 
   editUser() {
-
   }
 
   deleteUser(id: number) {
+    this.pendingDeleteId = id;
+    this.dialog.open(this.deleteDialogTemplate, {
+      width: '400px'
+    })
   }
 
-
-
-
-
-
+  confirmDelete() {
+    if (this.pendingDeleteId) {
+      this.usersService.deleteUser(this.pendingDeleteId).subscribe({
+        next: () => {
+          this.loadUsers();
+          this.dialog.closeAll();
+          this.pendingDeleteId = null;
+        }
+      });
+    }
+  }
 }

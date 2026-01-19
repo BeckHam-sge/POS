@@ -6,22 +6,26 @@
 
       <div class="col-md-6 mb-2">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>ชื่อผู้ใช้</mat-label>
+          <mat-label>username</mat-label>
           <input matInput formControlName="username">
         </mat-form-field>
       </div>
 
       <div class="col-md-6 mb-2">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>ชื่อ</mat-label>
-          <input matInput formControlName="name">
+          <mat-label>password</mat-label>
+          <input matInput type="number" formControlName="name">
         </mat-form-field>
       </div>
 
-      <div class="col-md-6 mb-2">
+    <div class="col-md-6 mb-2">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>บทบาท</mat-label>
-          <input matInput formControlName="role">
+          <mat-select formControlName="role">
+            <mat-option value="admin">Admin</mat-option>
+            <mat-option value="user">User</mat-option>
+            <mat-option value="staff">Staff</mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
 

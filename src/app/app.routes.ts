@@ -20,7 +20,7 @@ export const routes: Routes = [
     },
     {
         path: 'user',
-        loadComponent: () => import('./pages/user/user').then(m => m.User)
+        loadComponent: () => import('./pages/user/user').then(m => m.UserComponent)
     },
     {
         path: 'producttype',
