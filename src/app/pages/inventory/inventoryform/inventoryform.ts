@@ -6,7 +6,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Categories } from '../../../services/Categories/categories';
+import { Categories } from '../../../services/Categoriesservice/categories';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
@@ -55,9 +55,9 @@ export class inventoryformComponent implements OnInit  {
     console.log( this.data);
     if (this.data) {
       this.productForm.patchValue({
-        id: this.data._id || this.data.id,
+        id: this.data.id || this.data.id,
         productName: this.data.productName,
-        categoryId: this.data.category_id || this.data.categoryId,
+        categoryId: this.data.categoryId || this.data.categoryId,
         price: this.data.price,
         stock: this.data.stock,
       });

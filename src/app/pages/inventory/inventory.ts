@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Product, ProductService } from '../../services/product/product';
+import { Product, ProductService } from '../../services/productservice/product';
 import { MatPaginatorModule } from "@angular/material/paginator";
 
 import { inventoryformComponent } from './inventoryform/inventoryform';
@@ -32,7 +32,7 @@ import { inventoryformComponent } from './inventoryform/inventoryform';
 export class Inventory implements OnInit {
   @ViewChild('deleteDialog') deleteDialogTemplate!: TemplateRef<any>;
 
-  private productService = inject(ProductService);
+  private productService = inject(ProductService) as ProductService;
   private dialog = inject(MatDialog);
 
   pendingDeleteId: string | null = null;
@@ -101,7 +101,7 @@ export class Inventory implements OnInit {
       this.dataSource.filter = filterValue;
     }
 
-  onAddProduct() {
+  openMyDialog() {
     this.mode = 'add';
     const dialogRef = this.dialog.open(inventoryformComponent, {
         width: '500px',
@@ -156,9 +156,6 @@ export class Inventory implements OnInit {
     }
   }
 
-  openMyDialog() {
-    this.onAddProduct();
-  }
 
   closeMyDialog() {
     this.dialog.closeAll();

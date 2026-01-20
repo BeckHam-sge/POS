@@ -13,15 +13,25 @@
 
       <div class="col-md-6 mb-2">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>password</mat-label>
-          <input matInput type="number" formControlName="name">
+          <mat-label>name</mat-label>
+          <input matInput formControlName="name">
         </mat-form-field>
       </div>
 
       <div class="col-md-6 mb-2">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>บทบาท</mat-label>
-          <input matInput formControlName="role">
+          <mat-label>password</mat-label>
+          <input matInput type="number" formControlName="password">
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role">
+            <mat-option value="admin">Admin</mat-option>
+            <mat-option value="user">User</mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
 

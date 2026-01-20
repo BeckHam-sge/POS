@@ -6,63 +6,60 @@
     <button mat-raised-button color="primary" (click)="onAddUser()">
       <mat-icon>add</mat-icon> เพิ่มผู้ใช้ใหม่
     </button>
-</div>
+  </div>
 
-    <div  appearance="outline" class="w-100 mb-3">
-      <mat-form-field appearance="outline" class="w-100 mb-3">
-        <mat-label>ค้นหาประเภทสินค้า (Filter)</mat-label>
-        <input matInput (keyup)="search($event)" placeholder="ตัวอย่าง: เสื้อผ้า" #input>
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-    </div>
+  <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-label>ค้นหาผู้ใช้ </mat-label>
+    <input matInput (keyup)="search($event)"  #input>
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
 
-<table mat-table [dataSource]="dataSource">
+  <table mat-table [dataSource]="dataSource">
 
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef> ID </th>
-    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-  </ng-container>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="username">
-    <th mat-header-cell *matHeaderCellDef> ชื่อผู้ใช้ </th>
-    <td mat-cell *matCellDef="let element"> {{element.username}} </td>
-  </ng-container>
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> ชื่อผู้ใช้ </th>
+      <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> ชื่อ </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> ชื่อ </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="role">
-    <th mat-header-cell *matHeaderCellDef> บทบาท </th>
-    <td mat-cell *matCellDef="let element"> {{element.role}} </td>
-  </ng-container>
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef> บทบาท </th>
+      <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>actions</th>
-    <td mat-cell *matCellDef="let element" class="text-center">
-      <button
-        mat-icon-button
-        color="primary"
-        (click)="editUser()"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>actions</th>
+      <td mat-cell *matCellDef="let element" class="text-center">
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="editUser(element)"
+          >
+          <mat-icon>edit</mat-icon>
+        </button>
 
-      <button
-        mat-icon-button
-        color="warn"
-        (click)="deleteUser(element.id)">
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="deleteUser(element.id)">
         <mat-icon>delete</mat-icon>
-      </button>
-    </td>
+        </button>
+      </td>
+    </ng-container>
 
-  </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-</table>
+  </table>
 
   <mat-paginator
     showFirstLastButtons
@@ -74,7 +71,7 @@
 
 <ng-template #deleteDialog>
   <h2 mat-dialog-title class="fw-bold text-danger">ยืนยันการลบ</h2>
-  <mat-dialog-actions mat-flat-button color="warn" [mat-dialog-close]="true">
-    <mat-icon>delete</mat-icon>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" (click)="confirmDelete()">ลบ</button>
   </mat-dialog-actions>
 </ng-template>
