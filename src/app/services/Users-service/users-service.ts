@@ -33,6 +33,11 @@ export class Users {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
+  searchUsers(keyword: string): Observable<User[]> {
+    const params = new HttpParams().set('keyword', keyword);
+    return this.http.get<User[]>(`${this.apiUrl}/search`, { params });
+  }
+
   getRoles(): Observable<Role[]> {
     return this.http.get<Role[]>(`${this.apiUrl}/roles`);
   }
@@ -50,8 +55,5 @@ export class Users {
   deleteUser(id: number): Observable<User> {
     return this.http.delete<User>(`${this.apiUrl}/${id}`);
   }
-
-
-
 
 }

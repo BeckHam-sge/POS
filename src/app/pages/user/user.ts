@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Form } from './form/form';
-import { Users } from '../../services/Usersservice/users';
+import { Users } from '../../services/Users-service/users-service';
 
 export interface UserData {
     id: number;
@@ -42,6 +42,7 @@ export class UserComponent implements OnInit {
   dataSource = new MatTableDataSource<UserData>([]);
   pendingDeleteId: number | null | undefined;
   mode: string | undefined;
+  value: string | undefined;
 
   ngOnInit(): void {
     this.loadUsers();
@@ -101,8 +102,10 @@ export class UserComponent implements OnInit {
     }
   }
 
-  search(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
+  search(value: string) {
+    this.usersService.searchUsers(value).subscribe({
+    next: (res) => this.dataSource.data = res,
+    })
   }
 
   editUser(element: UserData) {

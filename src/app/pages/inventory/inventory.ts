@@ -7,10 +7,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Product, ProductService } from '../../services/productservice/product';
+import { Product, ProductService } from '../../services/product-service/product-service';
 import { MatPaginatorModule } from "@angular/material/paginator";
-
-import { inventoryformComponent } from './inventoryform/inventoryform';
+import { inventoryformComponent } from './inventory-form/inventory-form';
 
 @Component({
   selector: 'app-inventory',
@@ -32,7 +31,7 @@ import { inventoryformComponent } from './inventoryform/inventoryform';
 export class Inventory implements OnInit {
   @ViewChild('deleteDialog') deleteDialogTemplate!: TemplateRef<any>;
 
-  private productService = inject(ProductService) as ProductService;
+  private productService = inject(ProductService);
   private dialog = inject(MatDialog);
 
   pendingDeleteId: string | null = null;
@@ -63,7 +62,7 @@ export class Inventory implements OnInit {
           }
 
           this.dataSource.data = data.map(item => ({
-            id: item.id || item.id,
+            id: item.id,
             code: item.code || item.sku || item.product_code ||  'N/A',
             productName: item.name || item.productName || 'Unknown Product',
             price: parseFloat(item.price) || 0,
@@ -98,7 +97,7 @@ export class Inventory implements OnInit {
 
     applyFilter(event: Event) {
       const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource.filter = filterValue;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
   openMyDialog() {

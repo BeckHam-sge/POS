@@ -10,7 +10,7 @@
 
   <mat-form-field appearance="outline" class="w-100 mb-3">
     <mat-label>ค้นหาผู้ใช้ </mat-label>
-    <input matInput (keyup)="search($event)"  #input>
+    <input matInput (keyup)="search($event.target.value)"  #input>
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 
@@ -62,9 +62,8 @@
   </table>
 
   <mat-paginator
-    showFirstLastButtons
+    [pageSize]="5"
     [pageSizeOptions]="[1,5,10, 50, 100]"
-    aria-label="Select page"
   >
   </mat-paginator>
 </div>

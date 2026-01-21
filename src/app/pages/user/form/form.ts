@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelect, MatOption } from "@angular/material/select";
-import { Users, Role } from '../../../services/Usersservice/users';
+import { Users, Role } from '../../../services/Users-service/users-service';
 
 @Component({
   selector: 'app-form',
@@ -58,7 +58,7 @@ export class Form {
     })
   }
 
-  save() {
+  Save() {
     if (this.userForm.valid) {
       this.dialogRef.close(this.userForm.value);
     }
